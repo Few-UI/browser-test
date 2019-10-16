@@ -1,12 +1,8 @@
-[![Build Status](https://img.shields.io/travis/jesse23/few?style=flat-square)](https://travis-ci.org/jesse23/few) [![Coverage Status](https://img.shields.io/coveralls/github/jesse23/few?style=flat-square)](https://coveralls.io/github/jesse23/few?branch=master) [![License](https://img.shields.io/github/license/jesse23/few?style=flat-square)](https://github.com/jesse23/few/blob/master/LICENSE)
+[![Build Status](https://img.shields.io/travis/Few-UI/browser-test?style=flat-square)](https://travis-ci.org/Few-UI/browser-test)
 
 
-
-# FEW
-Practice to create a declarative UI
-
-## DEMO
-[Github Site](https://jesse23.github.io/few/)
+# What is this
+Test suite for features provided by browser, polyfill and framework, as documentation.
 
 ## Getting started
 ### Debug in Test Site
@@ -25,5 +21,4 @@ npm test -- -debug
 ```
 
 ## Goal
-- Transparent
-- Performance
+- Test as Documentation

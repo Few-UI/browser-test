@@ -1,5 +1,6 @@
 /* eslint-env es6, jasmine */
 import {
+    parseView,
     parseViewToDiv
 } from './test-utils';
 
@@ -71,7 +72,7 @@ class TestElem extends HTMLElement {
     }
 }
 
-describe( 'Test Custom Element Life Cycle', () => {
+fdescribe( 'Test Custom Element Life Cycle', () => {
     beforeAll( () =>{
         // registartion
         lifecycleHook = [];
@@ -83,6 +84,49 @@ describe( 'Test Custom Element Life Cycle', () => {
 
     beforeEach( () => {
         lifecycleHook = [];
+    } );
+
+    fit( 'Verify Custom Element lifecycle for nested when using a pure parser', async() => {
+        // Parse
+        lifecycleHook = [];
+        //// duplicate id and view for easy test
+        let viewHtml = `<${TestElem.tag()} id="testView" view="testView" scope="testScope">testText
+                          <${TestElem.tag()} id="testView2" view="testView2" scope="testScope2">testText2</${TestElem.tag()}>
+                        </${TestElem.tag()}>`;
+
+        let elem = parseView( viewHtml );
+        lifecycleHook.push( 'last if sync' );
+
+        expect( elem.outerHTML ).toEqual( `<div>${viewHtml}</div>` );
+        expect( lifecycleHook ).toEqual( [
+            'last if sync'
+        ] );
+
+        // Attach
+        lifecycleHook = [];
+        document.body.appendChild( elem );
+        lifecycleHook.push( 'last if sync' );
+        expect( lifecycleHook ).toEqual( [
+            'constructor() => testView',
+            'attributeChangedCallback( view, null, testView)',
+            'attributeChangedCallback( scope, null, testScope)',
+            'connectedCallback() => testView',
+            'constructor() => testView2',
+            'attributeChangedCallback( view, null, testView2)',
+            'attributeChangedCallback( scope, null, testScope2)',
+            'connectedCallback() => testView2',
+            'last if sync'
+        ] );
+
+        // Detach
+        lifecycleHook = [];
+        document.body.removeChild( elem );
+        lifecycleHook.push( 'last if sync' );
+        expect( lifecycleHook ).toEqual( [
+            'disconnectedCallback() => testView',
+            'disconnectedCallback() => testView2',
+            'last if sync'
+        ] );
     } );
 
     it( 'Verify Custom Element lifecycle for sibling', async() => {

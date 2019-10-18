@@ -121,3 +121,17 @@ export function parseViewToDiv( str ) {
     newDom.innerHTML = str.trim();
     return newDom;
 }
+
+/**
+ * Parse view string as DOM without interpret it
+ * TODO no for now and needs to be enahanced
+ * @param {string} str view template as string
+ * @returns {Element} DOM Element
+ */
+export function parseView( str ) {
+    let parser = new DOMParser();
+    let fragement = document.createDocumentFragment();
+    fragement.appendChild( parser.parseFromString( `<div>${str}</div>`, 'text/html' ).body.firstChild );
+    return fragement.firstChild;
+}
+
